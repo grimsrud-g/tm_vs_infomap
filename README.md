@@ -8,8 +8,8 @@ Analysis: Infomap vs Template Matching Visual Comparison
 The scripts in `code/tm_vs_infomap/`:
 
 1. Load Template Matching (TM) and Infomap PFMs for each discovery subject, separately for rest and task.
-2. Plot the three maps together for visual comparison: TM above filtered + dilated Infomap and filtered-only Infomap, with left lateral, left medial, right lateral, and right medial views on the same subject's inflated fsLR 32k surfaces.
-3. Save one PNG per subject/condition and display it inline in the notebooks. Each of the three rows has its own network legend.
+2. Plot the three maps together for visual comparison: TM above filtered + dilated Infomap and unfiltered Infomap, with left lateral, left medial, right lateral, and right medial views on the same subject's inflated fsLR 32k surfaces.
+3. Save one PNG per subject/condition and display it inline in the notebooks. TM has its own network legend; the two Infomap rows share a legend.
 
 Subjects: **s03, s10, s19, s29, s43**. Conditions: **rest, task** (10 figures).
 Cortex only; no Dice/overlap metrics or network matching across methods.
@@ -19,7 +19,7 @@ Cortex only; no Dice/overlap metrics or network matching across methods.
 Template Matching : `*_ReproTM_template-ABCC2026-a3-9to16_refine-SCAN_minsize-30.dscalar.nii`
 Infomap, filtered + dilated : `*_desc-spatialfiltered+dilated50mm_networks.dlabel.nii`
 
-The third row uses `*_desc-spatialfiltered_networks.dlabel.nii` (spatial filtering without dilation). Enable it with `include_filtered=True` or `--include-filtered`; the notebooks enable it by default.
+The third row uses `*_desc-infomap_networks.dlabel.nii`: network labels assigned to the raw Infomap communities, before spatial filtering or dilation. Enable it with `include_unfiltered=True` or `--include-unfiltered`; both notebooks enable it by default. “Unfiltered” here refers to spatial postprocessing; the upstream Infomap minimum-community-size rule still applies.
 
 ## Input Dir
 
@@ -34,9 +34,9 @@ The default batch checks 60 file references: 30 network maps, 10 TM companion dl
 ## Output Dir
 
 Default notebook setting:
-`/oak/stanford/groups/russpold/users/grimsrud/projects/pfm_compare/analysis/tm_vs_infomap/30Sept2026_discovery_with_filtered/`
+`/oak/stanford/groups/russpold/users/grimsrud/projects/pfm_compare/analysis/tm_vs_infomap/30Sept2026_discovery_with_unfiltered/`
 
-- `sub-<subject>_task-<condition>_TM-vs-Infomap.png`: 3 × 4 surface panels and three legends.
+- `sub-<subject>_task-<condition>_TM-vs-Infomap.png`: 3 × 4 surface panels, a TM legend, and a shared Infomap legend.
 - Matching `.json`: input paths, file sizes/modification times, settings, package versions, and per-method cortical counts.
 
 Inputs are read-only. Existing outputs require `OVERWRITE=True` in a notebook or `--overwrite` on the command line; alternatively choose a new output directory.
